@@ -1,0 +1,34 @@
+版本：redis4.0.6
+
+1.安装依赖
+# yum install gcc gcc-c++ tcl
+
+2.解压安装包并进入目录
+# tar -zxf redis-4.0.6.tar.gz
+# cd redis-4.0.6
+
+3.开始安装
+# make
+# make install PREFIX=/alidata/redis
+这一步会在安装目录生成bin目录和redis可执行文件,用来启动redis服务的文件为 redis-server,redis命令行工具为redis-cli
+
+4.复制配置文件到安装目录
+# cd /alidata/redis
+# cp /home/backup/src/redis-4.0.6/redis.conf ./
+
+5.编辑配置文件，启动服务
+#vim redis.conf
+以下几个主要配置:
+bind 127.0.0.1                               监听地址。
+该选项的定义为:It is possible to listen to just one or multiple selected interfaces using the "bind" configuration directive, followed by one or more IP addresses.
+也就是说，当选项启用并配置了IP后，即可使redis通过且仅通过该接口来监听访问。
+port                                         监听端口
+daemonize yes                                以守护进程方式运行
+logfile "/alidata/log/redis/redis.log"       日志文件位置
+dbfilename dump.rdb                          RDS方式持久化的文件名
+dir /alidata/redis/bin/                      RDS方式持久化的文件位置
+maxmemory 8gb                                最大可用内存
+appendonly yes                               开启AOF方式持久化
+
+手动启动redis服务
+# /alidata/redis/bin/redis-server /alidata/redis/redis.conf
